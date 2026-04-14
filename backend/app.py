@@ -278,8 +278,13 @@ async def _stream_pepper_response(
     loop.run_in_executor(None, _blocking_stream)
 
     # Yield SSE events as they arrive from the queue
+    # Send keepalive comments every 15s to prevent proxy/client timeouts
     while True:
-        event = await queue.get()
+        try:
+            event = await asyncio.wait_for(queue.get(), timeout=15.0)
+        except asyncio.TimeoutError:
+            yield ": keepalive\n\n"
+            continue
 
         if event is None:
             # Stream ended
