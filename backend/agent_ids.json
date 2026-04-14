@@ -1,0 +1,8 @@
+{
+  "agent_id": "agent_011Ca3hQhzAmhnw7aWYPbfy9",
+  "environment_id": "env_01N6pRmErQbr3j47p7ua541u",
+  "vault_id": "vlt_011Ca3hQoKtVUHdzUNVrSkVU",
+  "credential_ids": {
+    "github": "vcrd_019x1fjbWHkYDQZahBvdBp83"
+  }
+}
