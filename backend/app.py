@@ -258,21 +258,38 @@ async def _stream_pepper_response(
     client: anthropic.Anthropic,
     session_id: str,
 ) -> AsyncGenerator[str, None]:
-    """Stream Pepper's response as SSE events to the iOS app."""
+    """Stream Pepper's response as SSE events to the iOS app in real-time."""
     full_text_chunks: list[str] = []
+    queue: asyncio.Queue = asyncio.Queue()
 
-    # Run the blocking stream in a thread
     def _blocking_stream():
-        events = []
-        with client.beta.sessions.events.stream(session_id=session_id) as stream:
-            for event in stream:
-                events.append(event)
-        return events
+        """Run in thread — pushes events to the async queue as they arrive."""
+        try:
+            with client.beta.sessions.events.stream(session_id=session_id) as stream:
+                for event in stream:
+                    queue.put_nowait(event)
+        except Exception as exc:
+            queue.put_nowait(exc)
+        finally:
+            queue.put_nowait(None)  # Sentinel: stream ended
 
+    # Start the blocking stream in a background thread
     loop = asyncio.get_event_loop()
-    events = await loop.run_in_executor(None, _blocking_stream)
+    loop.run_in_executor(None, _blocking_stream)
 
-    for event in events:
+    # Yield SSE events as they arrive from the queue
+    while True:
+        event = await queue.get()
+
+        if event is None:
+            # Stream ended
+            yield f"data: {json.dumps({'type': 'done'})}\n\n"
+            return
+
+        if isinstance(event, Exception):
+            yield f"data: {json.dumps({'type': 'error', 'message': str(event)})}\n\n"
+            return
+
         match event.type:
             case "agent.message":
                 for block in event.content:
@@ -301,7 +318,6 @@ async def _stream_pepper_response(
                 escalations = _detect_escalations(full_text, session_id)
                 for esc in escalations:
                     yield f"data: {json.dumps({'type': 'escalation', **esc})}\n\n"
-                    # Fire push notification
                     await _send_push_notification(
                         title=f"[{esc['category']}] Decision needed",
                         body=esc["what"],
@@ -318,8 +334,6 @@ async def _stream_pepper_response(
             case "session.status_terminated":
                 yield f"data: {json.dumps({'type': 'terminated'})}\n\n"
                 return
-
-    yield f"data: {json.dumps({'type': 'done'})}\n\n"
 
 
 # ---------------------------------------------------------------------------
