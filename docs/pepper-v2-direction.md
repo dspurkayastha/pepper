@@ -126,9 +126,16 @@ advisor panel · pre-mortems. All of these attach to the river as events or card
 ## 5. Decisions so far
 
 ### Case templates (build order)
-All oncology sites except head & neck, plus general surgery, minor procedures and endoscopy.
+Breast, upper GI, colorectal, HPB, gynae-onc, skin & surface, and sarcoma (selective), plus general surgery, minor procedures and endoscopy. No head & neck, thoracic or uro-onc.
 Each template carries staging, site-specific quality fields and a surveillance schedule. The
-schedule defaults to the guideline you pick (NCCN or ESMO) and can be edited per patient.
+schedule can be edited per patient.
+
+**Standards used by default** ("whatever is mandated and standard"):
+- **Staging:** AJCC TNM, current edition for each site. **FIGO** for gynaecological cancers.
+- **Surveillance:** no follow-up schedule is legally mandated in India, so the default is **NCCN** (the most widely followed standard in Indian oncology practice). **ICMR consensus guidelines** are shown alongside where they exist. Your hospital's or tumour board's protocol overrides both when you set it.
+- **Complications:** Clavien-Dindo for all cases, plus ISGPS (pancreas) and ISGLS (liver) definitions.
+- **Pathology fields:** follow the CAP cancer protocols' core elements, so reports map cleanly.
+- **Data protection:** DPDP Act 2023; clinical photography per your institution's policy.
 
 | Template | Site-specific fields |
 |---|---|
@@ -137,7 +144,8 @@ schedule defaults to the guideline you pick (NCCN or ESMO) and can be edited per
 | **Colorectal** | Tumour height · TME quality · CRM · node yield · MMR/MSI · stoma · CEA surveillance |
 | **HPB** (pancreas, liver, biliary, gallbladder) | Resection type · vascular resection · ISGPS POPF / DGE / PPH grades · ISGLS liver failure · margins |
 | **Gynae-onc** | FIGO stage · PCI · completeness of cytoreduction (CC score) · nodal dissection · HIPEC |
-| **Others (confirm)** | Thoracic, soft-tissue sarcoma, uro-onc, skin/melanoma. Added only if you do them |
+| **Skin & surface** | Melanoma: Breslow depth, ulceration, mitoses, margins, SLNB · non-melanoma skin cancer: subtype, margins, reconstruction/flap |
+| **Sarcoma** (selective) | Site, size, depth, FNCLCC grade · margin (R0/R1, planned close) · neoadjuvant RT/chemo · compartment/limb salvage |
 | **General & minor** | Procedure, indication, approach, complications (Clavien-Dindo). Deliberately short |
 | **Endoscopy** | Scope type, findings, biopsies taken, therapeutic steps, histology follow-through |
 
@@ -159,6 +167,4 @@ Pepper **never holds your net-banking login, never moves money, and never scrape
 - Financial data lives in the Life space. It is encrypted, kept separate from the business and clinical agents, and never used in content.
 
 ## 6. Open questions
-1. Do you operate thoracic, sarcoma, uro-onc or skin/melanoma cases? (templates)
-2. NCCN or ESMO as the default surveillance schedule?
-3. Does your hospital have a clinical photography policy or consent form to match?
+1. Does your hospital have a clinical photography policy or consent form to match?
