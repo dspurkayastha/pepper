@@ -1,5 +1,10 @@
 # Pepper for iOS: Product, Design & Build Plan
 
+> **Update:** the chosen direction is now **Pepper v2: River + Now + Orb, with
+> clinical support**. See [`pepper-v2-direction.md`](pepper-v2-direction.md). It
+> supersedes the layout and visual design in §3–5 below. The rest of this plan
+> still applies.
+
 > Pepper is a calm, always-on chief of staff for SciScribe Solutions. It keeps five
 > products running, talks when you want to talk, and interrupts only when a
 > decision is really yours.
