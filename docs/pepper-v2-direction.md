@@ -123,8 +123,42 @@ advisor panel · pre-mortems. All of these attach to the river as events or card
 
 ---
 
-## 5. Open questions
-1. Which cancer sites make up most of your work? This decides which staging and surveillance templates to build first.
-2. Is there a hospital HIS/EMR with any export, or is it all paper + WhatsApp today?
+## 5. Decisions so far
+
+### Case templates (build order)
+All oncology sites except head & neck, plus general surgery, minor procedures and endoscopy.
+Each template carries staging, site-specific quality fields and a surveillance schedule. The
+schedule defaults to the guideline you pick (NCCN or ESMO) and can be edited per patient.
+
+| Template | Site-specific fields |
+|---|---|
+| **Breast** | ER/PR/HER2, Ki-67 · BCS vs mastectomy · SLNB/ALND · NACT response (RCB / Miller-Payne) · margins · reconstruction |
+| **Upper GI** (oesophagus, stomach) | Siewert type · neoadjuvant regimen · lymphadenectomy extent · node yield · TRG · anastomotic leak |
+| **Colorectal** | Tumour height · TME quality · CRM · node yield · MMR/MSI · stoma · CEA surveillance |
+| **HPB** (pancreas, liver, biliary, gallbladder) | Resection type · vascular resection · ISGPS POPF / DGE / PPH grades · ISGLS liver failure · margins |
+| **Gynae-onc** | FIGO stage · PCI · completeness of cytoreduction (CC score) · nodal dissection · HIPEC |
+| **Others (confirm)** | Thoracic, soft-tissue sarcoma, uro-onc, skin/melanoma. Added only if you do them |
+| **General & minor** | Procedure, indication, approach, complications (Clavien-Dindo). Deliberately short |
+| **Endoscopy** | Scope type, findings, biopsies taken, therapeutic steps, histology follow-through |
+
+### EHR: can't integrate, so capture around it
+- Photograph or screenshot the EHR screen, discharge summary or path report. The on-device privacy shield removes names and numbers before anything is read. Then Pepper extracts the fields.
+- PDFs you download from the EHR can be shared to Pepper the same way.
+- Nothing ever writes back to the EHR. Pepper's notes stay drafts for you to paste in.
+
+### Calendars: Apple + Google (personal)
+- **On the phone:** EventKit reads every calendar in iOS Calendar, both iCloud and Google (if the Google account is added in iOS Settings). That covers reading and conflict-checking with no extra login.
+- **For the server** (scheduling while your phone is offline, sending invites): Google Calendar via OAuth, token held in the vault. The iCloud calendar is only read and written on the phone.
+- The backend only receives what it needs (time, title, lane). Event notes and attendees stay on the phone unless you open an item.
+
+### HDFC Bank: safe by design
+Pepper **never holds your net-banking login, never moves money, and never scrapes the bank website.**
+- **Read (now):** HDFC's email alerts and monthly e-statements. A Gmail filter labels them, and Pepper reads *only* that label (a narrow Gmail scope), parses debits, credits and balance, and files statements. The statement PDF password lives in the device Keychain.
+- **Read (later):** India's RBI **Account Aggregator** network (HDFC is a data provider on it) gives consent-based, read-only, time-limited, revocable access. Receiving that data generally requires being, or going through, a regulated entity, so it's a later option via a regulated partner.
+- **Pay:** Pepper prepares the payment (payee, amount, due date) and opens your **HDFC or UPI app** with it pre-filled. *You* authenticate there with your PIN or biometrics. Pepper never gets a payment credential.
+- Financial data lives in the Life space. It is encrypted, kept separate from the business and clinical agents, and never used in content.
+
+## 6. Open questions
+1. Do you operate thoracic, sarcoma, uro-onc or skin/melanoma cases? (templates)
+2. NCCN or ESMO as the default surveillance schedule?
 3. Does your hospital have a clinical photography policy or consent form to match?
-4. Which bank(s) and calendar(s) should the Life lane read? Read-only first; payments always need your approval.
