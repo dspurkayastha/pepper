@@ -7,12 +7,15 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
+COPY pepper ./pepper
+COPY scripts ./scripts
 COPY agent_ids.json ./agent_ids.json
 
 ENV PEPPER_DATA_DIR=/var/lib/pepper
-ENV PEPPER_AGENT_IDS=/app/agent_ids.json
+ENV PEPPER_AGENT_IDS=/var/lib/pepper/agent_ids.json
 
+# agent_ids.json is copied into the data volume on first start so setup_agent.py
+# updates (new schedules, vault id) persist across image rebuilds.
 RUN mkdir -p /var/lib/pepper && chown -R pepper:pepper /var/lib/pepper /app
 VOLUME /var/lib/pepper
 
@@ -22,4 +25,4 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')" || exit 1
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["sh", "-c", "[ -f \"$PEPPER_AGENT_IDS\" ] || cp /app/agent_ids.json \"$PEPPER_AGENT_IDS\"; exec uvicorn pepper.main:app --host 0.0.0.0 --port 8080"]

@@ -168,3 +168,7 @@ Pepper **never holds your net-banking login, never moves money, and never scrape
 
 ## 6. Open questions
 1. Does your hospital have a clinical photography policy or consent form to match?
+
+## 7. Build status
+- **Phase 0 (backend foundations): done.** See `backend/README.md`: vault-backed secrets, structured and answerable decisions, schedules run by Anthropic (IST), async streaming with resume, webhook catch-up, per-device tokens, the case log with all templates, and OT-list intake. 39 tests.
+- **Next (Phase 1):** SwiftUI app shell (river, Now cards, orb, capture with on-device de-identification) against this API; a backend-run tool for SSH/Namecheap; Gmail-label reader for HDFC alerts.

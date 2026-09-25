@@ -1,8 +1,7 @@
-anthropic>=0.94.0
-fastapi>=0.115.0
-uvicorn[standard]>=0.30.0
-python-dotenv>=1.0.0
-cryptography>=42.0.0
-apscheduler>=3.10.0
-aioapns>=3.0
-pydantic>=2.5.0
+anthropic==1.8.0
+fastapi==0.141.1
+uvicorn[standard]==0.54.0
+SQLAlchemy[asyncio]==2.1.1
+aiosqlite==0.22.1
+pydantic==2.13.5
+aioapns==4.0
