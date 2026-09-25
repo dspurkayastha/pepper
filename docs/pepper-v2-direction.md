@@ -4,7 +4,7 @@ This direction replaces the "Quiet instrument" layout in `ios-app-plan.md` §3�
 The backend, platform-integration and architecture sections of that plan still
 apply. The screens are on the **Pepper v2** page of the *Pepper iOS Design* canvas.
 
-Pepper grows from business manager into **one assistant for your whole day:
+Pepper grows from business manager into **one assistant for your whole day as a consultant oncosurgeon, founder and family person:
 clinic, company and life.**
 
 ---
@@ -37,24 +37,38 @@ clinic, company and life.**
 
 ## 2. The clinical module
 
+### Who it's for
+A **consultant surgical oncologist** who also does general surgery, minor procedures and
+endoscopy. The clinical module is a **personal case log and practice-outcomes tool**, plus
+sign-off for residents' logs. It is not a trainee requirement tracker.
+
 ### What it does
 | Capability | How it works |
 |---|---|
-| **Point-and-shoot capture** | Photo, short video (≤30 s), voice note or document scan from the Capture button, Lock Screen, Action Button or Watch. Pepper suggests which case it belongs to (from the OT list or ward census and the time). |
-| **Logbook, drafted for you** | A capture plus a two-line voice note becomes a structured entry: procedure, role, indication, anaesthesia, duration (from timestamps), complications. Pepper asks you to confirm only the fields it couldn't infer. |
-| **Supervisor sign-off** | One tap sends entries for sign-off (email/WhatsApp link or the programme's portal). Pepper chases politely before deadlines. |
-| **Requirement tracking** | Progress against your programme's numbers (performed / supervised / assisted / emergency), with deadline reminders and export in the university/NMC format. |
-| **Dictation to notes** | Ward-round, consult and op notes drafted from dictation into your templates. Handover is compiled from the day's notes. |
-| **On-call mode** | During on-call or OT (from roster, calendar or Focus), the river shows only the Clinical lane. Everything else is held until morning. |
-| **Thesis and academics** | Guide-meeting prep, chapter comment summaries, literature pulls (PubMed), reference hygiene, conference and CME deadlines. |
-| **Teaching file** | Interesting cases (de-identified) tagged for later teaching, presentations or case reports. |
-| **CME and credentials** | Registration renewals, CME credit tracking, certificates stored and ready. |
+| **OT list intake (WhatsApp + paper)** | Share the WhatsApp message or screenshot to Pepper through the iOS share sheet, or photograph the paper list in Capture's LIST mode. Pepper reads it and matches patients to your OPD notes. It builds tomorrow's list on the river with a prep checklist per case (consent, cross-match, clip marking, lymphoscintigraphy, frozen-section request) and flags gaps. |
+| **Point-and-shoot capture** | Photo, video (≤30 s), specimen photo, voice note. Pepper links each capture to the right case using the list and the time. |
+| **Case record, drafted** | Oncology fields: diagnosis and site, cTNM/stage (AJCC 8th), neoadjuvant therapy and response, procedure, approach (open/lap/robotic/endoscopic), intent (curative/palliative), your role, time, blood loss, frozen section, intra-op events, resident involved. You confirm only what Pepper couldn't infer. |
+| **Histopathology follow-through** | Pending reports are watched. When one arrives (shared photo/PDF), Pepper adds pT, pN, margin status (R0/R1/R2), node yield and ypTNM/TRG after neoadjuvant therapy, then asks you once. |
+| **Complications and outcomes** | Clavien-Dindo checks at 30 and 90 days (a one-tap card). Readmissions and re-operations recorded. Practice dashboard: cases by category, R0 rate, median node yield, CD ≥ III rate, length of stay. The same data serves M&M, audit and credentialing. |
+| **Tumour board prep** | For each of your patients listed: a one-screen summary (stage, path, imaging, treatment so far, the question for the board), and the decision recorded back into the case. |
+| **Surveillance follow-up** | Follow-up schedules by cancer type (e.g. imaging and marker intervals). Reminders are drafted for you or your team to send. Overdue patients are flagged. |
+| **Resident logs** | Residents' entries that name you arrive as cards; approve or comment in one swipe. Your own case record can also generate the resident's entry. |
+| **Scopy lists** | Biopsy request forms pre-filled. Findings dictated → report draft → biopsy results tracked like histopath. |
+| **Dictation to notes** | Ward-round, consult, op notes and discharge summaries drafted from dictation into your templates. Handover compiled at the end of on-call. |
+| **Academic** | Case series pulled from your log for papers and talks (de-identified CSV). Literature pulls, CME/conference deadlines, registration renewals. |
+| **On-call mode** | During on-call or OT (from the list, calendar or Focus), the river shows only the Clinical lane. Everything else is held until morning. |
+
+### About WhatsApp
+WhatsApp has no API for reading personal chats, so Pepper cannot "watch" the OT group.
+Instead, reading them takes one gesture: **share the message, screenshot or photo to Pepper** from WhatsApp's share
+menu, a Shortcuts automation, or the Capture button. Pepper can also **draft** WhatsApp
+messages (to the resident group, OT in-charge or family) for you to send with one tap.
 
 ### Privacy by design (not optional)
 Patient images are the most sensitive data this app will touch. The rules:
 
 1. **De-identify on the phone, before anything leaves it.** On-device detection blurs faces, ID bands, name boards, monitors with names, and paper charts. EXIF and location are stripped. The capture screen shows what was hidden.
-2. **Identifiers stay local.** Hospital numbers and names live only in an encrypted on-device store (Keychain-protected, Face ID gated), linked to entries by a local key. The server and the agent see only de-identified data.
+2. **Identifiers stay local.** Hospital numbers and names live only in an encrypted on-device store (Keychain-protected, Face ID gated), linked to entries by a local key. The server and the agent see only de-identified data. Surveillance follow-up needs identity over years, so this store syncs across your own devices end-to-end encrypted (e.g. CloudKit with Advanced Data Protection). It is never readable by the backend.
 3. **Separate clinical space.** Clinical media and entries sit in their own storage and their own agent, with no memory shared with the business agent. They are never used in content, marketing or product work.
 4. **Consent record.** Each capture can attach a consent flag (verbal/written, per your institution's policy). The logbook shows it.
 5. **Photos stay out of the camera roll.** Captures go straight into the app's encrypted container, never into Photos or iCloud Photos.
@@ -70,6 +84,18 @@ Camera → on-device de-identification → local encrypted store
                                                → app shows draft → you confirm
                                                → sign-off request → logbook
 ```
+
+---
+
+### The Life lane
+| Area | What Pepper does |
+|---|---|
+| **Family calendar** | Merges family calendars. Protects family events against OT and clinic scheduling, and books the cab to get you there. Birthdays and anniversaries come with gift ideas early. |
+| **Finances** | EMIs, SIPs, insurance premiums, advance-tax dates, credit-card dues. Checks the balance before auto-debits. Compares renewal quotes. Files invoices and receipts from a photo. Keeps an income view across salary, private practice and the company. |
+| **Travel** | CME and conference trips end to end: leave application, flights and hotel holds, visa/passport checks, itinerary on the river. |
+| **Plans** | Holidays and family plans, with suggestions when a gap opens up. |
+| **Health (yours)** | Check-up reminders, sleep and activity trends from Apple Health on OT-heavy weeks (with permission), and nudges to protect recovery time. |
+| **Misc** | Car service, document renewals (passport, licence, registration), home maintenance, subscriptions. |
 
 ---
 
@@ -98,8 +124,7 @@ advisor panel · pre-mortems. All of these attach to the river as events or card
 ---
 
 ## 5. Open questions
-1. Specialty and programme: which logbook format and requirement numbers (NMC PG logbook, university e-logbook, other)?
-2. Are you a resident, faculty or both? This changes whether sign-off is *requested* or *given*.
-3. Hospital policy on clinical photography on personal devices: is there an approved workflow to match?
-4. Where do OT lists and rosters come from (HIS, WhatsApp, paper)? This decides how Pepper knows your cases.
-5. Which personal areas belong in the Life lane (family calendar, finances, travel, health)?
+1. Which cancer sites make up most of your work? This decides which staging and surveillance templates to build first.
+2. Is there a hospital HIS/EMR with any export, or is it all paper + WhatsApp today?
+3. Does your hospital have a clinical photography policy or consent form to match?
+4. Which bank(s) and calendar(s) should the Life lane read? Read-only first; payments always need your approval.
